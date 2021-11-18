@@ -3,3 +3,13 @@ https://javatechonline.com/how-to-implement-security-in-spring-boot-project
 1 commit: in-memory authentication security
 	branch: security_in-memory
 	dated: 18th nov 2021 - 21:13
+	
+INSERT INTO `user`(`user_enabled`, `user_pass`, `user_role`, `user_name`) VALUES (1,'$2a$10$4WklQAnfIBsIwCJpiVziHuwyFHMR4PJl5dMaTDL8kckNXg5YwRjcS','ADMIN','devs');
+INSERT INTO `user`(`user_enabled`, `user_pass`, `user_role`, `user_name`) VALUES (1,'$2a$10$EePMAMucA6qKKXp4R3d84eQ.QgyZp8BhrnE1gTaJXDb33B43iS5We','EMPLOYEE','ns');
+INSERT INTO `user`(`user_enabled`, `user_pass`, `user_role`, `user_name`) VALUES (1,'$2a$10$BPtFPsgoK8NOiILzBfg51emdtP9Rp7.hM3pO08ioWwnwZkr9Ql6/K','MANAGER','vs');
+######################################
+######################################
+
+2 commit: JDBC authentication security
+	branch: security_in-db
+	dated: 19th nov 2021 - 00:35

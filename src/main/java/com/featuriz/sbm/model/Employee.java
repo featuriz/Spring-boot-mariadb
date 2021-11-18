@@ -58,7 +58,6 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "email_address", nullable = false)
 	public String getEmailId() {
 		return emailId;
 	}

@@ -1,0 +1,22 @@
+<div th:fragment="footer">
+	Current user:</br>
+	<div th:if="${cu}">
+		Username: [[${cu.username}]]</br>
+		Password: [[${cu.password}]]</br>
+		Role: [[${cu.authorities[0]}]]</br>
+		Enabled: [[${cu.enabled}]]</br>
+		Full: [[${cu}]]</br>
+	</div>
+	<div th:unless="${cu}">
+		Not logged-in!
+	</div>
+	</br>
+	<a th:href="@{/sb/home}">Home</a>
+	<a th:href="@{/sb/welcome}">welcome</a>
+	<a th:href="@{/sb/admin}">admin</a>
+	<a th:href="@{/sb/emp}">emp</a>
+	<a th:href="@{/sb/mgr}">mgr</a>
+	<a th:href="@{/sb/common}">common</a>
+	<a th:href="@{/sb/accessDenied}">accessDenied</a>
+	<a th:href="@{/logout}">LOGOUT</a>
+</div>
