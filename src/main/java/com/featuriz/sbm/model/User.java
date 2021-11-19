@@ -1,10 +1,16 @@
 package com.featuriz.sbm.model;
 
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -21,21 +27,25 @@ public class User {
 	@Column(name = "user_pass", nullable = false)
 	private String password;
 
-	@Column(name = "user_role", nullable = false)
-	private String role;
+	@Column(name = "user_email", nullable = false)
+	private String email;
 
 	@Column(name = "user_enabled", nullable = false)
 	private boolean enabled;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+	@Column(name = "user_role")
+	private List<String> roles;
 
 	public User() {
 
 	}
 
-	public User(String username, String password, String role, boolean enabled) {
+	public User(String username, String password, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.role = role;
 		this.enabled = enabled;
 	}
 
@@ -63,12 +73,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public boolean isEnabled() {
@@ -77,6 +87,14 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }

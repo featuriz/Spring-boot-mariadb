@@ -8,12 +8,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private UserDetailsService uds;
 	
 	@Autowired
 	private DataSource dataSource;
@@ -28,11 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		auth.inMemoryAuthentication().withUser("devs").password("{noop}devs").authorities("ADMIN");
 //		auth.inMemoryAuthentication().withUser("ns").password("{noop}ns").authorities("EMPLOYEE");
 //		auth.inMemoryAuthentication().withUser("vs").password("{noop}vs").authorities("MANAGER");
-		auth.jdbcAuthentication()
-		.dataSource(dataSource)     //creates database connection
-		.usersByUsernameQuery("select user_name,user_pass,user_enabled from user where user_name=?")
-		.authoritiesByUsernameQuery("select user_name,user_role from user where user_name=?")
-		.passwordEncoder(passwordEncoder);
+//		2
+//		auth.jdbcAuthentication()
+//		.dataSource(dataSource)     //creates database connection
+//		.usersByUsernameQuery("select user_name,user_pass,user_enabled from user where user_name=?")
+//		.authoritiesByUsernameQuery("select user_name,user_role from user where user_name=?")
+//		.passwordEncoder(passwordEncoder);
+//		3
+		auth.userDetailsService(uds).passwordEncoder(passwordEncoder);
 	}
 
 	@Override
@@ -40,12 +47,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// declares which Page(URL) will have What access type
 		http.authorizeRequests()
+				.antMatchers("/", "/new","/save").permitAll()
+				.antMatchers("/user/register", "/user/save").permitAll()
 				.antMatchers("/sb/home").permitAll()
 				.antMatchers("/sb/welcome").authenticated()
 				.antMatchers("/sb/admin").hasAuthority("ADMIN")
 				.antMatchers("/sb/emp").hasAuthority("EMPLOYEE")
 				.antMatchers("/sb/mgr").hasAuthority("MANAGER")
-				.antMatchers("/sb/common").hasAnyAuthority("EMPLOYEE", "MANAGER")
+				.antMatchers("/sb/common").hasAnyAuthority("EMPLOYEE", "MANAGER","ADMIN")
 
 				// Any other URLs which are not configured in above antMatchers
 				// generally declared aunthenticated() in real time

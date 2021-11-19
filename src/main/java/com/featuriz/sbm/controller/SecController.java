@@ -16,12 +16,7 @@ public class SecController {
 
 	@GetMapping("/home")
 	public String getHomePage(Authentication authentication, Model model) {
-		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
-		model.addAttribute("devs", bpe.encode("devs"));
-		model.addAttribute("ns", bpe.encode("ns"));
-		model.addAttribute("vs", bpe.encode("vs"));
 //		Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
 		User u = (User) authentication.getPrincipal();
 		model.addAttribute("cu", u);
 		return "sb/homePage";
