@@ -1,7 +1,5 @@
 package com.featuriz.sbm.security;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,13 +13,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private UserDetailsService uds;
-	
-	@Autowired
-	private DataSource dataSource;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -46,22 +41,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		// declares which Page(URL) will have What access type
-		http.authorizeRequests()
-				.antMatchers("/", "/new","/save").permitAll()
-				.antMatchers("/user/register", "/user/save").permitAll()
-				.antMatchers("/sb/home").permitAll()
-				.antMatchers("/sb/welcome").authenticated()
-				.antMatchers("/sb/admin").hasAuthority("ADMIN")
-				.antMatchers("/sb/emp").hasAuthority("EMPLOYEE")
-				.antMatchers("/sb/mgr").hasAuthority("MANAGER")
-				.antMatchers("/sb/common").hasAnyAuthority("EMPLOYEE", "MANAGER","ADMIN")
+		http.authorizeRequests().antMatchers("/", "/new", "/save").permitAll()
+				.antMatchers("/user/login", "/user/register", "/user/save").permitAll().antMatchers("/sb/home")
+				.permitAll().antMatchers("/sb/welcome").authenticated().antMatchers("/sb/admin").hasAuthority("ADMIN")
+				.antMatchers("/sb/emp").hasAuthority("EMPLOYEE").antMatchers("/sb/mgr").hasAuthority("MANAGER")
+				.antMatchers("/sb/common").hasAnyAuthority("EMPLOYEE", "MANAGER", "ADMIN")
 
 				// Any other URLs which are not configured in above antMatchers
 				// generally declared aunthenticated() in real time
 				.anyRequest().authenticated()
 
 				// Login Form Details
-				.and().formLogin().defaultSuccessUrl("/sb/welcome", true)
+				.and().formLogin().loginPage("/user/login").permitAll()
+				.defaultSuccessUrl("/sb/welcome", true)
 
 				// Logout Form Details
 				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

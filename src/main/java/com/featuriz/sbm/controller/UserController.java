@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.featuriz.sbm.model.User;
 import com.featuriz.sbm.service.IUserService;
@@ -30,5 +31,16 @@ public class UserController {
 		String message = "User '" + id + "' saved successfully !";
 		model.addAttribute("msg", message);
 		return "user/register";
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model, String error, String logout) {
+		if (error != null)
+			model.addAttribute("msg", "Your username and password are invalid.");
+
+		if (logout != null)
+			model.addAttribute("msg", "You have been logged out successfully.");
+
+		return "user/login";
 	}
 }
